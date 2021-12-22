@@ -27,6 +27,37 @@ namespace RestNew.Controllers
             return await _context.leads.ToListAsync();
         }
 
+        // GET: api/Leads/potential
+        [HttpGet("potential")]
+        public async Task<ActionResult<IEnumerable<Lead>>> GetleadsPotential()
+        {
+            List<Lead> finalLeads = new List<Lead>();
+
+            var findLeads = await (from leads in _context.leads
+                                   where leads.date_of_creation >= DateTime.Now.AddDays(-30)
+                                   select leads).Distinct().ToListAsync();
+
+            var findCustomers = await _context.customers.ToListAsync();
+
+            foreach (var lead in findLeads)
+            {
+                bool isInside = false;
+                foreach (var customer in findCustomers)
+                {
+                    if (lead.email == customer.email_of_the_company_contact)
+                    {
+                        isInside = true;
+                    }
+                }
+                if (isInside == false)
+                {
+                    finalLeads.Add(lead);
+                }
+            }
+
+            return finalLeads;
+        }
+
         // GET: api/Leads/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Lead>> GetLead(int id)

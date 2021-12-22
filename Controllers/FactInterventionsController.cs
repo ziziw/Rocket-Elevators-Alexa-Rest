@@ -13,25 +13,26 @@ namespace RestNew.Controllers
     [ApiController]
     public class FactInterventionsController : ControllerBase
     {
-        private readonly ApplicationContext _context;
-
-        public FactInterventionsController(ApplicationContext context)
+        private readonly PostgreApplicationContext _context;
+        private readonly ApplicationContext _context2;
+        public FactInterventionsController(PostgreApplicationContext context, ApplicationContext context2)
         {
             _context = context;
+            _context2 = context2;
         }
 
         // GET: api/FactInterventions
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FactIntervention>>> GetFactIntervention()
         {
-            return await _context.FactIntervention.ToListAsync();
+            return await _context.fact_interventions.ToListAsync();
         }
 
         // GET: api/FactInterventions/5
         [HttpGet("{id}")]
         public async Task<ActionResult<FactIntervention>> GetFactIntervention(int id)
         {
-            var factIntervention = await _context.FactIntervention.FindAsync(id);
+            var factIntervention = await _context.fact_interventions.FindAsync(id);
 
             if (factIntervention == null)
             {
@@ -39,6 +40,20 @@ namespace RestNew.Controllers
             }
 
             return factIntervention;
+        }
+
+        //GET from specific intervention
+        [HttpGet("{id}/bonus1")]
+        public async Task<ActionResult<String>> GetSpecificIntervention(int id)
+        {
+            var factIntervention = await _context.fact_interventions.FindAsync(id);
+            var building = await _context2.buildings.FindAsync(factIntervention.building_id);
+            var address = await _context2.addresses.FindAsync(building.address_id);
+            if (factIntervention == null)
+            {
+                return NotFound();
+            }
+            return "factIntervention start intervention:" + factIntervention.start_intervention + "\nfactIntervention stop intervention " + factIntervention.end_intervention + "\naddress: " + address.number_and_street;
         }
 
         // PUT: api/FactInterventions/5
@@ -77,7 +92,7 @@ namespace RestNew.Controllers
         [HttpPost]
         public async Task<ActionResult<FactIntervention>> PostFactIntervention(FactIntervention factIntervention)
         {
-            _context.FactIntervention.Add(factIntervention);
+            _context.fact_interventions.Add(factIntervention);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetFactIntervention", new { id = factIntervention.intervention_id }, factIntervention);
@@ -87,13 +102,13 @@ namespace RestNew.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFactIntervention(int id)
         {
-            var factIntervention = await _context.FactIntervention.FindAsync(id);
+            var factIntervention = await _context.fact_interventions.FindAsync(id);
             if (factIntervention == null)
             {
                 return NotFound();
             }
 
-            _context.FactIntervention.Remove(factIntervention);
+            _context.fact_interventions.Remove(factIntervention);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -101,7 +116,7 @@ namespace RestNew.Controllers
 
         private bool FactInterventionExists(int id)
         {
-            return _context.FactIntervention.Any(e => e.intervention_id == id);
+            return _context.fact_interventions.Any(e => e.intervention_id == id);
         }
     }
 }
