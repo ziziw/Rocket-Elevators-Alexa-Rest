@@ -74,11 +74,11 @@ namespace RestNew.Controllers
         }
 
         // return buildings of the customer. 
-        // GET: api/Customers/buildings/email
-        [HttpGet("buildings/{email}")]
-        public async Task<ActionResult<List<Building>>> GetBuildingsOfCustomer(string email)
+        // GET: api/Customers/buildings/id
+        [HttpGet("buildings/{id}")]
+        public async Task<ActionResult<List<Building>>> GetBuildingsOfCustomer(int id)
         {
-            var customer = await _context.customers.FirstOrDefaultAsync(c => c.email_of_the_company_contact == email);
+            var customer = await _context.customers.FirstOrDefaultAsync(c => c.id == id);
 
             if (customer == null)
             {
@@ -177,7 +177,7 @@ namespace RestNew.Controllers
 
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok();
         }
 
         // POST: api/Customers
