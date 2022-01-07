@@ -1,3 +1,3 @@
-Rocket_Elevators_Customer_Portal_Rest
+Rocket_Elevators_Alexa_Rest
 
-https://rickyzchen.herokuapp.com/api
+https://rickyzchen.herokuapp.com/
