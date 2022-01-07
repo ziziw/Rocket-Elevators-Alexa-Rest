@@ -1,0 +1,5 @@
+{
+    "appService.preDeployTask": "publish-release",
+    "appService.deploySubpath": "bin/Release/net5.0/publish",
+    "appService.defaultWebAppToDeploy": "/subscriptions/10ce061c-9bd4-4c6f-a60a-b67940fe6ad3/resourceGroups/appsvc_windows_centralus/providers/Microsoft.Web/sites/rickychen-rest"
+}

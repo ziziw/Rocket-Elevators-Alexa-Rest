@@ -27,6 +27,23 @@ namespace RestNew.Controllers
             return await _context.addresses.ToListAsync();
         }
 
+        // GET: api/Addresses/cities
+        [HttpGet("cities")]
+        public async Task<ActionResult<IEnumerable<String>>> GetaddressesCities()
+        {
+            var addresses = await _context.addresses.ToListAsync();
+            var cities = new List<string>();
+            foreach (Address address in addresses)
+            {
+                if (!cities.Contains(address.city) && address.city != null)
+                {
+                    cities.Add(address.city);
+                }
+            }
+
+            return cities;
+        }
+
         // GET: api/Addresses/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Address>> GetAddress(int id)

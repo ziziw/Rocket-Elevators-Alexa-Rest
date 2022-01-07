@@ -21,7 +21,8 @@ namespace RestNew.Models
         public DbSet<Employee> employees { get; set; }
         public DbSet<Building_Detail> building_details { get; set; }
         public DbSet<Intervention> interventions { get; set; }
-        public DbSet<RestNew.Models.FactIntervention> FactIntervention { get; set; }
+        public DbSet<FactIntervention> FactIntervention { get; set; }
+        public DbSet<Quote> quotes { get; set; }
 
     }
     public class PostgreApplicationContext : DbContext
